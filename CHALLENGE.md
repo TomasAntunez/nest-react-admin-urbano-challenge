@@ -11,9 +11,9 @@ Considero que lo mas importante y urgente es que el proyecto funcione correctame
 
 1. **Revisar los endpoints de backend y frontend**: Esto es principalmente para saber si para el correcto funcionamiento es necesario desarrollar algun endpoint nuevo o si alguno esta de mas, principalmente para no hacer sobretrabajo y perder tiempo arreglando codigo que no es necesario.
 
-2. **Arreglar aplicacion de nestjs**: La idea que quede funcional primero en el entorno local, y luego en el entorno de produccion. Es decir, primero arreglar codigo y luego arreglar Dockerfile y docker-compose (solo la parte del backend y base de datos).
+2. **Arreglar aplicacion de nestjs**: La idea es que quede funcional primero en el entorno local, y luego en el entorno de produccion. Es decir, primero arreglar codigo y luego arreglar Dockerfile y docker-compose (solo la parte del backend y base de datos).
 
-3. **Arreglar aplicacion de react**: Al igual que con el backend, primero arreglar codigo y luego arreglar Dockerfile y docker-compose (solo la parte del frontend, lo cual ).
+3. **Arreglar aplicacion de react**: Al igual que con el backend, primero arreglar codigo y luego arreglar Dockerfile y docker-compose (solo la parte del frontend).
 
 4. **Creacion otra "app" que haga de proxy**: Si bien el proxy lo podria hacer el nginx que se configura en el frontend, la idea es que sea una app que se encargue de hacer el proxy y que se pueda configurar facilmente. Principalmente para separar las responsabilidades y que cada app tenga un unico proposito. Una vez integradas todas las apps (frontend, backend, y proxy), la intención es que con tan solo ejecutar `docker compose build` se construyan todas las imágenes necesarias. Estas imágenes podrían luego (queda fuera del alcance de este desafío):
     - Subirse a un repositorio de imágenes (como Docker Hub o ECR).

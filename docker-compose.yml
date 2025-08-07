@@ -1,11 +1,15 @@
 services:
-  database:
-    image: postgres:alpine
-    container_name: database
+  postgres-db:
+    image: postgres:15-alpine
+    container_name: postgres-db
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: carna-database
-      POSTGRES_USER: carna
-      POSTGRES_PASSWORD: IjSJmKN1fc#DZBL*NHbVoxIh65JvsFFDO@so
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - "${DATABASE_PORT}:5432"
 
   backend:
     container_name: backend
@@ -13,9 +17,9 @@ services:
       context: backend
       dockerfile: Dockerfile
     depends_on:
-      - database
+      - postgres-db
     environment:
-      DATABASE_HOST: database
+      DATABASE_HOST: postgres-db
       DATABASE_PORT: 5432
       DATABASE_USERNAME: carna
       DATABASE_PASSWORD: IjSJmKN1fc#DZBL*NHbVoxIh65JvsFFDO@so

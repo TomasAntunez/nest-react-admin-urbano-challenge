@@ -1,6 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import * as cookieParser from 'cookie-parser';
 
@@ -25,6 +26,7 @@ async function createAdminOnFirstUse() {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
   app.setGlobalPrefix('api');
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe());
@@ -40,6 +42,10 @@ async function bootstrap() {
 
   await createAdminOnFirstUse();
 
-  await app.listen(5000);
+  const configService = app.get(ConfigService);
+  const port = Number(configService.get<string>('BACKEND_PORT')) || 5000;
+
+  await app.listen(port);
 }
+
 bootstrap();

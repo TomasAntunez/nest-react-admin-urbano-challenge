@@ -1,4 +1,12 @@
-dist
-node_modules
-.env
-.git
+/dist
+/e2e
+/node_modules
+/.git
+
+Dockerfile
+.prettierrc
+.eslintrc.js
+.gitignore
+nest-cli.json
+README.md
+CHALLENGE.md

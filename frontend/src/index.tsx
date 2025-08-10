@@ -1,7 +1,7 @@
 import './styles/index.css';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 import App from './App';
@@ -10,7 +10,8 @@ import reportWebVitals from './reportWebVitals';
 
 const queryClient = new QueryClient();
 
-ReactDOM.render(
+const root = document.getElementById('root');
+createRoot(root).render(
   <React.StrictMode>
     <AuthenticationProvider>
       <QueryClientProvider client={queryClient}>
@@ -18,7 +19,6 @@ ReactDOM.render(
       </QueryClientProvider>
     </AuthenticationProvider>
   </React.StrictMode>,
-  document.getElementById('root'),
 );
 
 reportWebVitals();

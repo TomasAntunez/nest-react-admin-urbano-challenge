@@ -3,7 +3,7 @@ import { createContext, Dispatch, SetStateAction, useState } from 'react';
 import User from '../models/user/User';
 
 interface AuthContextValue {
-  authenticatedUser: User;
+  authenticatedUser?: User;
   setAuthenticatedUser: Dispatch<SetStateAction<User>>;
 }
 

@@ -17,13 +17,7 @@ Considero que lo mas importante y urgente es que el proyecto funcione correctame
 
 3. **Arreglar aplicacion de react**: Al igual que con el backend, primero arreglar codigo y luego arreglar Dockerfile y docker-compose (solo la parte del frontend).
 
-4. **Creacion otra "app" que haga de proxy**: Si bien el proxy lo podria hacer el nginx que se configura en el frontend, la idea es que sea una app que se encargue de hacer el proxy y que se pueda configurar facilmente. Principalmente para separar las responsabilidades y que cada app tenga un unico proposito. Una vez integradas todas las apps (frontend, backend, y proxy), la intención es que con tan solo ejecutar `docker compose build` se construyan todas las imágenes necesarias. Estas imágenes podrían luego (queda fuera del alcance de este desafío):
-
-   - Subirse a un repositorio de imágenes (como Docker Hub o ECR).
-   - Desplegarse manualmente en una máquina virtual.
-   - O integrarse con scripts/sistemas de CI/CD, según la infraestructura disponible.
-
-5. **Planteo de refactorizacion**: Una vez que las aplicaciones esten funcionando correctamente y esten listas para desplegar a produccion, se puede plantear una refactorizacion para mejorar la estructura del codigo, eliminar duplicaciones y aplicar mejores practicas. Esto incluye la implementacion de pruebas automaticas para asegurar que los cambios no rompan la funcionalidad existente.
+4. **Planteo de refactorizacion**: Una vez que las aplicaciones esten funcionando correctamente y esten listas para desplegar a produccion, se puede plantear una refactorizacion para mejorar la estructura del codigo, eliminar duplicaciones y aplicar mejores practicas. Esto incluye la implementacion de pruebas automaticas para asegurar que los cambios no rompan la funcionalidad existente.
 
 ## Cambios para funcionamiento correcto del proyecto
 

@@ -38,3 +38,11 @@ Considero que lo mas importante y urgente es que el proyecto funcione correctame
 - Hice un refactor del routing de la aplicacion ya que subi algunas versiones las librerias y esto rompia con el routing anterior.
 - Hice un cambio en el `nginx.conf` apuntando a otro puerto para la api y tambien cambie la url base.
 - Cambie como se estaba construyendo la imagen de frontend, si bien no hay una mejora en el size, si hay una mejora en la legilibilidad y el orden.
+
+## Refactor y mejoras
+
+### Backend
+
+### Frontend
+
+- Elimine los intervals en los que se hacian requests para obtener la lista de cursos, contenidos y usuarios, ya que se hacia un request por segundo de manera innecesaria. Ahora cuando se hace una modificacion, ya sea creacion, actualizacion o eliminacion, en ese momento se vuelve a hacer el fetch para obtener el listado completo de elementos. Esto se podria mejorar incluso mas si guardaramos en memoria la lista de elementos, y cuando se hace un cambio en algun elemento actualizamos la lista en memoria sin necesidad de hacer un GET de mas para obtener la lista nueva.

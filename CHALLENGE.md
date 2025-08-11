@@ -42,3 +42,5 @@ Considero que lo mas importante y urgente es que el proyecto funcione correctame
 - Hice un cambio en las versiones de las librerias que se estaban usando en el `package.json` y reconstrui el `yarn.lock` para hacer limpieza.
 - Agregue un script de arranque para que se tomen las variables de entorno desde la raiz del proyecto y porque era necesario sobreescribir una variable para cambiar el puerto que usaba la app en desarrollo.
 - Hice un refactor del routing de la aplicacion ya que subi algunas versiones las librerias y esto rompia con el routing anterior.
+- Hice un cambio en el `nginx.conf` apuntando a otro puerto para la api y tambien cambie la url base.
+- Cambie como se estaba construyendo la imagen de frontend, si bien no hay una mejora en el size, si hay una mejora en la legilibilidad y el orden.

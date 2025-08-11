@@ -21,7 +21,7 @@ export default function Users() {
   const [addUserShow, setAddUserShow] = useState<boolean>(false);
   const [error, setError] = useState<string>();
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, refetch } = useQuery(
     ['users', firstName, lastName, username, role],
     async () => {
       return (
@@ -32,9 +32,6 @@ export default function Users() {
           role: role || undefined,
         })
       ).filter((user) => user.id !== authenticatedUser.id);
-    },
-    {
-      refetchInterval: 1000,
     },
   );
 
@@ -48,6 +45,7 @@ export default function Users() {
   const saveUser = async (createUserRequest: CreateUserRequest) => {
     try {
       await userService.save(createUserRequest);
+      refetch();
       setAddUserShow(false);
       setError(null);
       reset();
@@ -107,7 +105,7 @@ export default function Users() {
         </div>
       </div>
 
-      <UsersTable data={data} isLoading={isLoading} />
+      <UsersTable data={data} isLoading={isLoading} onUsersChange={refetch} />
 
       {/* Add User Modal */}
       <Modal show={addUserShow}>

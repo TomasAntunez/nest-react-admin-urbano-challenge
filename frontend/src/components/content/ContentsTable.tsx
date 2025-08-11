@@ -14,12 +14,14 @@ interface ContentsTableProps {
   data: Content[];
   courseId: string;
   isLoading: boolean;
+  onContentsChange: () => void;
 }
 
 export default function ContentsTable({
   data,
   isLoading,
   courseId,
+  onContentsChange,
 }: ContentsTableProps) {
   const { authenticatedUser } = useAuth();
   const [deleteShow, setDeleteShow] = useState<boolean>(false);
@@ -40,6 +42,7 @@ export default function ContentsTable({
     try {
       setIsDeleting(true);
       await contentService.delete(courseId, selectedContentId);
+      onContentsChange();
       setDeleteShow(false);
     } catch (error) {
       setError(error.response.data.message);
@@ -55,6 +58,7 @@ export default function ContentsTable({
         selectedContentId,
         updateContentRequest,
       );
+      onContentsChange();
       setUpdateShow(false);
       reset();
       setError(null);

@@ -18,15 +18,13 @@ export default function Courses() {
   const [error, setError] = useState<string>();
 
   const { authenticatedUser } = useAuth();
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, refetch } = useQuery(
     ['courses', name, description],
-    () =>
-      courseService.findAll({
+    () => {
+      return courseService.findAll({
         name: name || undefined,
         description: description || undefined,
-      }),
-    {
-      refetchInterval: 1000,
+      });
     },
   );
 
@@ -40,6 +38,7 @@ export default function Courses() {
   const saveCourse = async (createCourseRequest: CreateCourseRequest) => {
     try {
       await courseService.save(createCourseRequest);
+      refetch();
       setAddCourseShow(false);
       reset();
       setError(null);
@@ -80,7 +79,11 @@ export default function Courses() {
         </div>
       </div>
 
-      <CoursesTable data={data} isLoading={isLoading} />
+      <CoursesTable
+        data={data}
+        isLoading={isLoading}
+        onCoursesChange={refetch}
+      />
 
       {/* Add User Modal */}
       <Modal show={addCourseShow}>

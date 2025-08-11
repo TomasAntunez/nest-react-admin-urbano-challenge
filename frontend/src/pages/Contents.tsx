@@ -21,7 +21,9 @@ export default function Course() {
   const [addContentShow, setAddContentShow] = useState<boolean>(false);
   const [error, setError] = useState<string>();
 
-  const userQuery = useQuery('user', async () => courseService.findOne(id));
+  const courseQuery = useQuery(['course', id], async () => {
+    return courseService.findOne(id);
+  });
 
   const {
     register,
@@ -30,21 +32,20 @@ export default function Course() {
     reset,
   } = useForm<CreateContentRequest>();
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, refetch } = useQuery(
     [`contents-${id}`, name, description],
-    async () =>
-      contentService.findAll(id, {
+    async () => {
+      return contentService.findAll(id, {
         name: name || undefined,
         description: description || undefined,
-      }),
-    {
-      refetchInterval: 1000,
+      });
     },
   );
 
   const saveCourse = async (createContentRequest: CreateContentRequest) => {
     try {
       await contentService.save(id, createContentRequest);
+      refetch();
       setAddContentShow(false);
       reset();
       setError(null);
@@ -56,7 +57,7 @@ export default function Course() {
   return (
     <Layout>
       <h1 className="font-semibold text-3xl mb-5">
-        {!userQuery.isLoading ? `${userQuery.data.name} Contents` : ''}
+        {!courseQuery.isLoading ? `${courseQuery.data.name} Contents` : ''}
       </h1>
       <hr />
       {authenticatedUser.role !== 'user' ? (
@@ -87,7 +88,12 @@ export default function Course() {
         </div>
       </div>
 
-      <ContentsTable data={data} isLoading={isLoading} courseId={id} />
+      <ContentsTable
+        data={data}
+        isLoading={isLoading}
+        courseId={id}
+        onContentsChange={refetch}
+      />
 
       {/* Add User Modal */}
       <Modal show={addContentShow}>

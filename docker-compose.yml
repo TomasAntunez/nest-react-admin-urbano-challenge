@@ -12,6 +12,7 @@ services:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     ports:
       - "${DATABASE_PORT}:5432"
+    restart: unless-stopped
 
   backend:
     container_name: backend
@@ -31,13 +32,15 @@ services:
       JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
     ports:
       - "${BACKEND_PORT}:${BACKEND_PORT}"
+    restart: unless-stopped
 
   frontend:
     container_name: frontend
     build:
-      context: frontend
+      context: ./frontend
       dockerfile: Dockerfile
     ports:
       - "${FRONTEND_PORT}:80"
     depends_on:
       - backend
+    restart: unless-stopped

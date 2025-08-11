@@ -1,8 +1,8 @@
-import CreateUserRequest from '../models/user/CreateUserRequest';
-import UpdateUserRequest from '../models/user/UpdateUserRequest';
-import User from '../models/user/User';
-import UserQuery from '../models/user/UserQuery';
-import apiService from './ApiService';
+import { CreateUserRequest } from '../models/user/CreateUserRequest';
+import { UpdateUserRequest } from '../models/user/UpdateUserRequest';
+import { User } from '../models/user/User';
+import { UserQuery } from '../models/user/UserQuery';
+import { apiService } from './ApiService';
 
 class UserService {
   async save(createUserRequest: CreateUserRequest): Promise<void> {
@@ -42,4 +42,4 @@ class UserService {
   }
 }
 
-export default new UserService();
+export const userService = new UserService();

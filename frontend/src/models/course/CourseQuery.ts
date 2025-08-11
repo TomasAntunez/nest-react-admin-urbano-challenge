@@ -1,4 +1,4 @@
-export default interface CourseQuery {
+export interface CourseQuery {
   name?: string;
   description?: string;
 }

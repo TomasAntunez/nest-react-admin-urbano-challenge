@@ -1,4 +1,4 @@
-export default interface ContentQuery {
+export interface ContentQuery {
   name?: string;
   description?: string;
 }

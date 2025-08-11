@@ -7,8 +7,8 @@ import CoursesTable from '../components/courses/CoursesTable';
 import Layout from '../components/layout';
 import Modal from '../components/shared/Modal';
 import useAuth from '../hooks/useAuth';
-import CreateCourseRequest from '../models/course/CreateCourseRequest';
-import courseService from '../services/CourseService';
+import { CreateCourseRequest } from '../models/course/CreateCourseRequest';
+import { courseService } from '../services/CourseService';
 
 export default function Courses() {
   const [name, setName] = useState('');

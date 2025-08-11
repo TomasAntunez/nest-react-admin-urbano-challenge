@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { AlertTriangle, Loader, X } from 'react-feather';
 import { useForm } from 'react-hook-form';
 
-import UpdateUserRequest from '../../models/user/UpdateUserRequest';
-import User from '../../models/user/User';
-import userService from '../../services/UserService';
+import { UpdateUserRequest } from '../../models/user/UpdateUserRequest';
+import { User } from '../../models/user/User';
+import { userService } from '../../services/UserService';
 import Modal from '../shared/Modal';
 import Table from '../shared/Table';
 import TableItem from '../shared/TableItem';

@@ -1,4 +1,4 @@
-export default interface CreateUserRequest {
+export interface CreateUserRequest {
   firstName: string;
   lastName: string;
   username: string;

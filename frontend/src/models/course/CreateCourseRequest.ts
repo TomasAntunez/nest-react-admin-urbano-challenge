@@ -1,4 +1,4 @@
-export default interface CreateCourseRequest {
+export interface CreateCourseRequest {
   name: string;
   description: string;
 }

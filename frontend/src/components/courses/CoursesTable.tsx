@@ -4,9 +4,9 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
 import useAuth from '../../hooks/useAuth';
-import Course from '../../models/course/Course';
-import UpdateCourseRequest from '../../models/course/UpdateCourseRequest';
-import courseService from '../../services/CourseService';
+import { Course } from '../../models/course/Course';
+import { UpdateCourseRequest } from '../../models/course/UpdateCourseRequest';
+import { courseService } from '../../services/CourseService';
 import Modal from '../shared/Modal';
 import Table from '../shared/Table';
 import TableItem from '../shared/TableItem';

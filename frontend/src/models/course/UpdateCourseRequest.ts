@@ -1,4 +1,4 @@
-export default interface UpdateCourseRequest {
+export interface UpdateCourseRequest {
   name?: string;
   description?: string;
 }

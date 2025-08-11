@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-import AuthResponse from '../models/auth/AuthResponse';
-import LoginRequest from '../models/auth/LoginRequest';
-import apiService from './ApiService';
+import { AuthResponse } from '../models/auth/AuthResponse';
+import { LoginRequest } from '../models/auth/LoginRequest';
+import { apiService } from './ApiService';
 
 class AuthService {
   async login(loginRequest: LoginRequest): Promise<AuthResponse> {
@@ -33,4 +33,4 @@ class AuthService {
   }
 }
 
-export default new AuthService();
+export const authService = new AuthService();

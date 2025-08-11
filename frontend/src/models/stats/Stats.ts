@@ -1,4 +1,4 @@
-export default interface Stats {
+export interface Stats {
   numberOfUsers: number;
   numberOfCourses: number;
   numberOfContents: number;

@@ -1,4 +1,4 @@
-export default interface UpdateContentRequest {
+export interface UpdateContentRequest {
   name?: string;
   description?: string;
 }

@@ -4,8 +4,8 @@ import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 
 import useAuth from '../../hooks/useAuth';
-import UpdateUserRequest from '../../models/user/UpdateUserRequest';
-import userService from '../../services/UserService';
+import { UpdateUserRequest } from '../../models/user/UpdateUserRequest';
+import { userService } from '../../services/UserService';
 
 export default function UpdateProfile() {
   const { authenticatedUser } = useAuth();

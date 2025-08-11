@@ -1,4 +1,4 @@
-export default interface CreateContentRequest {
+export interface CreateContentRequest {
   name: string;
   description: string;
 }

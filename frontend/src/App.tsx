@@ -8,9 +8,9 @@ import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Users from './pages/Users';
 import { PrivateRoute, PublicRoute } from './Route';
-import authService from './services/AuthService';
+import { authService } from './services/AuthService';
 
-export default function App() {
+export function App() {
   const { authenticatedUser, setAuthenticatedUser } = useAuth();
   const [isLoaded, setIsLoaded] = useState(false);
 

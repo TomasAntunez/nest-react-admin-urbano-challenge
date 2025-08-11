@@ -1,4 +1,4 @@
-export default interface Content {
+export interface Content {
   id: string;
   name: string;
   description: string;

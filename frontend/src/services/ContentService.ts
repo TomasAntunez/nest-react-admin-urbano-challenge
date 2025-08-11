@@ -1,8 +1,8 @@
-import Content from '../models/content/Content';
-import ContentQuery from '../models/content/ContentQuery';
-import CreateContentRequest from '../models/content/CreateContentRequest';
-import UpdateContentRequest from '../models/content/UpdateContentRequest';
-import apiService from './ApiService';
+import { Content } from '../models/content/Content';
+import { ContentQuery } from '../models/content/ContentQuery';
+import { CreateContentRequest } from '../models/content/CreateContentRequest';
+import { UpdateContentRequest } from '../models/content/UpdateContentRequest';
+import { apiService } from './ApiService';
 
 class ContentService {
   async findAll(
@@ -42,4 +42,4 @@ class ContentService {
   }
 }
 
-export default new ContentService();
+export const contentService = new ContentService();

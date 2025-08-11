@@ -2,7 +2,7 @@ import { BookOpen, Home, LogOut, Users } from 'react-feather';
 import { Link, useNavigate } from 'react-router-dom';
 
 import useAuth from '../../hooks/useAuth';
-import authService from '../../services/AuthService';
+import { authService } from '../../services/AuthService';
 import SidebarItem from './SidebarItem';
 
 interface SidebarProps {

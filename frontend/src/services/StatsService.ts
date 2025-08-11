@@ -1,5 +1,5 @@
-import Stats from '../models/stats/Stats';
-import apiService from './ApiService';
+import { Stats } from '../models/stats/Stats';
+import { apiService } from './ApiService';
 
 class StatsService {
   async getStats(): Promise<Stats> {
@@ -7,4 +7,4 @@ class StatsService {
   }
 }
 
-export default new StatsService();
+export const statsService = new StatsService();

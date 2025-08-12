@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
-import { Layout } from './components/layout';
-import { useAuth } from './hooks/useAuth';
-import Contents from './pages/Contents';
-import Courses from './pages/Courses';
-import Dashboard from './pages/Dashboard';
-import Login from './pages/Login';
-import Users from './pages/Users';
-import { PrivateRoute, PublicRoute } from './Route';
-import { authService } from './services/AuthService';
+import { AuthenticatedRoute, AuthorizedRoute } from './auth/components';
+import { useAuth } from './auth/hooks';
+import { LoginPage } from './auth/pages';
+import { authService } from './auth/services';
+import { ContentCoursesPage } from './content-course/pages';
+import { CoursesPage } from './course/pages';
+import { DashboardPage } from './dashboard/pages';
+import { Layout, PublicRoute } from './shared/components';
+import { UsersPage } from './user/pages';
 
 export function App() {
   const { authenticatedUser, setAuthenticatedUser } = useAuth();
@@ -41,24 +41,20 @@ export function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<PrivateRoute component={Dashboard} />} />
-          <Route
-            path="/courses"
-            element={<PrivateRoute component={Courses} />}
-          />
-          <Route
-            path="/courses/:id"
-            element={<PrivateRoute component={Contents} />}
-          />
+        <Route path="/login" element={<PublicRoute component={LoginPage} />} />
+
+        <Route element={<AuthenticatedRoute component={Layout} />}>
+          <Route path="/" element={<DashboardPage />} />
+          <Route path="/courses" element={<CoursesPage />} />
+          <Route path="/courses/:id" element={<ContentCoursesPage />} />
 
           <Route
             path="/users"
-            element={<PrivateRoute roles={['admin']} component={Users} />}
+            element={
+              <AuthorizedRoute roles={['admin']} component={UsersPage} />
+            }
           />
         </Route>
-
-        <Route path="/login" element={<PublicRoute component={Login} />} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

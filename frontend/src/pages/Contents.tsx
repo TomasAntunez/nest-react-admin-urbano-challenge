@@ -7,7 +7,7 @@ import { useParams } from 'react-router';
 import { ContentsTable } from '../components/content/ContentsTable';
 import { Container } from '../components/shared/Container';
 import { Modal } from '../components/shared/Modal';
-import { useDebounce } from '../hooks/use-debounce';
+import { useDebounceState } from '../hooks/use-debounce-state';
 import { useAuth } from '../hooks/useAuth';
 import { CreateContentRequest } from '../models/content/CreateContentRequest';
 import { contentService } from '../services/ContentService';
@@ -17,8 +17,10 @@ export default function Course() {
   const { id } = useParams<{ id: string }>();
   const { authenticatedUser } = useAuth();
 
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const [name, debouncedName, setName] = useDebounceState('');
+  const [description, debouncedDescription, setDescription] =
+    useDebounceState('');
+
   const [addContentShow, setAddContentShow] = useState<boolean>(false);
   const [error, setError] = useState<string>();
 
@@ -32,9 +34,6 @@ export default function Course() {
     formState: { isSubmitting },
     reset,
   } = useForm<CreateContentRequest>();
-
-  const debouncedName = useDebounce(name);
-  const debouncedDescription = useDebounce(description);
 
   const { data, isLoading, refetch } = useQuery(
     [`contents-${id}`, debouncedName, debouncedDescription],

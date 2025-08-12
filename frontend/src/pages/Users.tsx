@@ -6,7 +6,7 @@ import { useQuery } from 'react-query';
 import { Container } from '../components/shared/Container';
 import { Modal } from '../components/shared/Modal';
 import { UsersTable } from '../components/users/UsersTable';
-import { useDebounce } from '../hooks/use-debounce';
+import { useDebounceState } from '../hooks/use-debounce-state';
 import { useAuth } from '../hooks/useAuth';
 import { CreateUserRequest } from '../models/user/CreateUserRequest';
 import { userService } from '../services/UserService';
@@ -14,17 +14,13 @@ import { userService } from '../services/UserService';
 export default function Users() {
   const { authenticatedUser } = useAuth();
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [username, setUsername] = useState('');
+  const [firstName, debouncedFirstName, setFirstName] = useDebounceState('');
+  const [lastName, debouncedLastName, setLastName] = useDebounceState('');
+  const [username, debouncedUsername, setUsername] = useDebounceState('');
   const [role, setRole] = useState('');
 
   const [addUserShow, setAddUserShow] = useState<boolean>(false);
   const [error, setError] = useState<string>();
-
-  const debouncedFirstName = useDebounce(firstName);
-  const debouncedLastName = useDebounce(lastName);
-  const debouncedUsername = useDebounce(username);
 
   const { data, isLoading, refetch } = useQuery(
     ['users', debouncedFirstName, debouncedLastName, debouncedUsername, role],

@@ -1,12 +1,12 @@
 import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import * as cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module';
-import { Role } from './enums/role.enum';
+import { Role } from './user/role.enum';
 import { User } from './user/user.entity';
 
 async function createAdminOnFirstUse() {

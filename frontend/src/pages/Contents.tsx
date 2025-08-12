@@ -4,10 +4,10 @@ import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router';
 
-import ContentsTable from '../components/content/ContentsTable';
-import Layout from '../components/layout';
-import Modal from '../components/shared/Modal';
-import useAuth from '../hooks/useAuth';
+import { ContentsTable } from '../components/content/ContentsTable';
+import { Layout } from '../components/layout';
+import { Modal } from '../components/shared/Modal';
+import { useAuth } from '../hooks/useAuth';
 import { CreateContentRequest } from '../models/content/CreateContentRequest';
 import { contentService } from '../services/ContentService';
 import { courseService } from '../services/CourseService';

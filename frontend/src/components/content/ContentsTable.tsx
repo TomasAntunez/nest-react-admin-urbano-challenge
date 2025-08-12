@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { AlertTriangle, Loader, X } from 'react-feather';
 import { useForm } from 'react-hook-form';
 
-import useAuth from '../../hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 import { Content } from '../../models/content/Content';
 import { UpdateContentRequest } from '../../models/content/UpdateContentRequest';
 import { contentService } from '../../services/ContentService';
-import Modal from '../shared/Modal';
-import Table from '../shared/Table';
-import TableItem from '../shared/TableItem';
+import { Modal } from '../shared/Modal';
+import { Table } from '../shared/Table';
+import { TableItem } from '../shared/TableItem';
 
 interface ContentsTableProps {
   data: Content[];
@@ -17,7 +17,7 @@ interface ContentsTableProps {
   onContentsChange: () => void;
 }
 
-export default function ContentsTable({
+export function ContentsTable({
   data,
   isLoading,
   courseId,

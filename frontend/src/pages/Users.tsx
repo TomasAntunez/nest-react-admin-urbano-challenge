@@ -3,10 +3,10 @@ import { Loader, Plus, X } from 'react-feather';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 
-import Layout from '../components/layout';
-import Modal from '../components/shared/Modal';
-import UsersTable from '../components/users/UsersTable';
-import useAuth from '../hooks/useAuth';
+import { Layout } from '../components/layout';
+import { Modal } from '../components/shared/Modal';
+import { UsersTable } from '../components/users/UsersTable';
+import { useAuth } from '../hooks/useAuth';
 import { CreateUserRequest } from '../models/user/CreateUserRequest';
 import { userService } from '../services/UserService';
 

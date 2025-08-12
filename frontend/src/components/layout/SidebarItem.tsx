@@ -8,7 +8,7 @@ interface SidebarItemProps {
   active?: boolean;
 }
 
-export default function SidebarItem({
+export function SidebarItem({
   children,
   to,
   active = false,

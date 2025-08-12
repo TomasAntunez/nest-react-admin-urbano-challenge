@@ -5,9 +5,9 @@ import { useForm } from 'react-hook-form';
 import { UpdateUserRequest } from '../../models/user/UpdateUserRequest';
 import { User } from '../../models/user/User';
 import { userService } from '../../services/UserService';
-import Modal from '../shared/Modal';
-import Table from '../shared/Table';
-import TableItem from '../shared/TableItem';
+import { Modal } from '../shared/Modal';
+import { Table } from '../shared/Table';
+import { TableItem } from '../shared/TableItem';
 
 interface UsersTableProps {
   data: User[];
@@ -15,7 +15,7 @@ interface UsersTableProps {
   onUsersChange: () => void;
 }
 
-export default function UsersTable({
+export function UsersTable({
   data,
   isLoading,
   onUsersChange,

@@ -3,11 +3,11 @@ import { Loader } from 'react-feather';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 
-import useAuth from '../../hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 import { UpdateUserRequest } from '../../models/user/UpdateUserRequest';
 import { userService } from '../../services/UserService';
 
-export default function UpdateProfile() {
+export function UpdateProfile() {
   const { authenticatedUser } = useAuth();
   const [error, setError] = useState<string>();
 

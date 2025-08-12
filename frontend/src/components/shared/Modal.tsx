@@ -7,7 +7,7 @@ interface ModalProps extends HTMLProps<HTMLDivElement> {
   show: boolean;
 }
 
-export default function Modal({ children, className, show }: ModalProps) {
+export function Modal({ children, className, show }: ModalProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {

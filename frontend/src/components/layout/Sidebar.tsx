@@ -1,15 +1,15 @@
 import { BookOpen, Home, LogOut, Users } from 'react-feather';
 import { Link, useNavigate } from 'react-router-dom';
 
-import useAuth from '../../hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 import { authService } from '../../services/AuthService';
-import SidebarItem from './SidebarItem';
+import { SidebarItem } from './SidebarItem';
 
 interface SidebarProps {
   className: string;
 }
 
-export default function Sidebar({ className }: SidebarProps) {
+export function Sidebar({ className }: SidebarProps) {
   const navigate = useNavigate();
 
   const { authenticatedUser, setAuthenticatedUser } = useAuth();

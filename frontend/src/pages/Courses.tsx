@@ -3,10 +3,10 @@ import { Loader, Plus, X } from 'react-feather';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 
-import CoursesTable from '../components/courses/CoursesTable';
-import Layout from '../components/layout';
-import Modal from '../components/shared/Modal';
-import useAuth from '../hooks/useAuth';
+import { CoursesTable } from '../components/courses/CoursesTable';
+import { Layout } from '../components/layout';
+import { Modal } from '../components/shared/Modal';
+import { useAuth } from '../hooks/useAuth';
 import { CreateCourseRequest } from '../models/course/CreateCourseRequest';
 import { courseService } from '../services/CourseService';
 

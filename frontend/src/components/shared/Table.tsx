@@ -5,7 +5,7 @@ interface TableProps {
   children: ReactNode;
 }
 
-export default function Table({ columns, children }: TableProps) {
+export function Table({ columns, children }: TableProps) {
   return (
     <table className="min-w-full divide-y divide-gray-200">
       <thead>

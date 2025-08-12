@@ -3,7 +3,7 @@ import { Loader, Plus, X } from 'react-feather';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 
-import { Layout } from '../components/layout';
+import { Container } from '../components/shared/Container';
 import { Modal } from '../components/shared/Modal';
 import { UsersTable } from '../components/users/UsersTable';
 import { useAuth } from '../hooks/useAuth';
@@ -55,9 +55,7 @@ export default function Users() {
   };
 
   return (
-    <Layout>
-      <h1 className="font-semibold text-3xl mb-5">Manage Users</h1>
-      <hr />
+    <Container title="Manage Users">
       <button
         className="btn my-5 flex gap-2 w-full sm:w-auto justify-center"
         onClick={() => setAddUserShow(true)}
@@ -186,6 +184,6 @@ export default function Users() {
           ) : null}
         </form>
       </Modal>
-    </Layout>
+    </Container>
   );
 }

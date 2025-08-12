@@ -5,7 +5,7 @@ import { useQuery } from 'react-query';
 import { useParams } from 'react-router';
 
 import { ContentsTable } from '../components/content/ContentsTable';
-import { Layout } from '../components/layout';
+import { Container } from '../components/shared/Container';
 import { Modal } from '../components/shared/Modal';
 import { useAuth } from '../hooks/useAuth';
 import { CreateContentRequest } from '../models/content/CreateContentRequest';
@@ -55,11 +55,9 @@ export default function Course() {
   };
 
   return (
-    <Layout>
-      <h1 className="font-semibold text-3xl mb-5">
-        {!courseQuery.isLoading ? `${courseQuery.data.name} Contents` : ''}
-      </h1>
-      <hr />
+    <Container
+      title={!courseQuery.isLoading ? `${courseQuery.data.name} Contents` : ''}
+    >
       {authenticatedUser.role !== 'user' ? (
         <button
           className="btn my-5 flex gap-2 w-full sm:w-auto justify-center"
@@ -145,6 +143,6 @@ export default function Course() {
           ) : null}
         </form>
       </Modal>
-    </Layout>
+    </Container>
   );
 }

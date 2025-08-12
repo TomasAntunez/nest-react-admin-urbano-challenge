@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
+import { Layout } from './components/layout';
 import { useAuth } from './hooks/useAuth';
 import Contents from './pages/Contents';
 import Courses from './pages/Courses';
@@ -40,17 +41,22 @@ export function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<PrivateRoute component={Dashboard} />} />
-        <Route path="/courses" element={<PrivateRoute component={Courses} />} />
-        <Route
-          path="/courses/:id"
-          element={<PrivateRoute component={Contents} />}
-        />
+        <Route element={<Layout />}>
+          <Route path="/" element={<PrivateRoute component={Dashboard} />} />
+          <Route
+            path="/courses"
+            element={<PrivateRoute component={Courses} />}
+          />
+          <Route
+            path="/courses/:id"
+            element={<PrivateRoute component={Contents} />}
+          />
 
-        <Route
-          path="/users"
-          element={<PrivateRoute roles={['admin']} component={Users} />}
-        />
+          <Route
+            path="/users"
+            element={<PrivateRoute roles={['admin']} component={Users} />}
+          />
+        </Route>
 
         <Route path="/login" element={<PublicRoute component={Login} />} />
 

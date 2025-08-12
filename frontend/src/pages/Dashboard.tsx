@@ -1,16 +1,14 @@
 import { useQuery } from 'react-query';
 
 import { UpdateProfile } from '../components/dashboard/UpdateProfile';
-import { Layout } from '../components/layout';
+import { Container } from '../components/shared/Container';
 import { statsService } from '../services/StatsService';
 
 export default function Dashboard() {
   const { data, isLoading } = useQuery('stats', statsService.getStats);
 
   return (
-    <Layout>
-      <h1 className="font-semibold text-3xl mb-5">Dashboard</h1>
-      <hr />
+    <Container title="Dashboard">
       <div className="mt-5 flex flex-col gap-5">
         {!isLoading ? (
           <div className="flex flex-col sm:flex-row gap-5">
@@ -37,6 +35,6 @@ export default function Dashboard() {
 
         <UpdateProfile />
       </div>
-    </Layout>
+    </Container>
   );
 }

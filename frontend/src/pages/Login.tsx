@@ -3,7 +3,7 @@ import { Loader } from 'react-feather';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import useAuth from '../hooks/useAuth';
+import { useAuth } from '../hooks/useAuth';
 import { LoginRequest } from '../models/auth/LoginRequest';
 import { authService } from '../services/AuthService';
 

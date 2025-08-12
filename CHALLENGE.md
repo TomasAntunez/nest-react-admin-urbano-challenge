@@ -44,6 +44,28 @@ Considero que lo mas importante y urgente es que el proyecto funcione correctame
 ### Backend
 
 - Movi algunos archivos que tenian que ver con los roles al modulo de usuario para no tener elementos sueltos en el proyecto, en todo caso si no corresponde a un modulo tendria que ir en alguna carpeta `shared` o `common`.
+- Separe cada modulo del proyecto en 3 capas:
+  ![Diagrama de arquitectura](docs/img/backend-architecture.png)
+  - La capa central que es la mas importante (Core) todo lo relacionado al dominio de negocio y dominio tecnico (un logger seria dominio tecnico):
+    - entidades
+    - enums
+    - value objects
+    - abstracciones de (repositorios, servicios, etc)
+    - dtos de dominio
+  - La capa que sigue es la capa de aplicacion, que contiene todas las formas de interactuar con nuestro dominio, si es que no tenemos que usar algo del dominio directamente:
+    - casos de uso
+    - comandos
+    - servicios (con logica de negocio unicamente)
+    - dtos de aplicacion
+  - La capa mas superficial es la de infrastructura y presentacion (se podrian trabajar como capas separadas pero estan al mismo nivel de abstraccion):
+    - controladores
+    - rutas
+    - middlewares
+    - dtos de infraestructura
+    - implementaciones (repositorios, servicios, etc)
+    - configuraciones
+    - modelos de datos
+  - Ahora mismo es necesario desacoplar algunas cosas, por lo que en casi todos los modulos tenemos casi todo en la capa mas superficial. La idea tampoco es ser purista e intentar tener el 100% abstraido, ya que nos perderiamos muchas soluciones que nos ofrece el framework y algunas librerias si vamos a ese extremo.
 
 ### Frontend
 

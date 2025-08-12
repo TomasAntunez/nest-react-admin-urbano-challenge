@@ -52,3 +52,6 @@ Considero que lo mas importante y urgente es que el proyecto funcione correctame
 - Tambien cree un componente `Container` para envolver el contenido principal de la aplicacion y aplicar margenes, paddings y los styles del titulo para no tener que repetir codigo.
 - Agrege un hook de `useDebounce` para manejar los cambios en los inputs de busqueda de manera mas eficiente.
 - Agregue un hook de `useDebounceState` para manejar el estado de los inputs de busqueda de manera mas limpia.
+- Separe el proyecto en modulos, donde cada uno por dentro tiene una separacion de responsabilidades y una estructura de carpetas bien definida. De esta manera se vuelve mas sencillo encontrar el codigo relacionado y mantenerlo organizado, lo que tambien hace mas facil de escalar en caso de ser necesario agregar mas features, lo mismo para el caso de querer separar el proyecto en librerias.
+- Cambie los nombres de los archivos para que el naming sea consistente y al final agregue sufijo que indica que hay dentro del archivo.
+- Cree archivos barril para que las importaciones queden mas limpias y tambien sirve para poder reorganizar carpetas dentro de cada modulo sin romper los clientes externos al modulo, es decir, quienes importan el codigo ya que no tienen por que saber especificamente en que carpeta se encuentran.

@@ -43,6 +43,8 @@ Considero que lo mas importante y urgente es que el proyecto funcione correctame
 
 ### Backend
 
+- Movi algunos archivos que tenian que ver con los roles al modulo de usuario para no tener elementos sueltos en el proyecto, en todo caso si no corresponde a un modulo tendria que ir en alguna carpeta `shared` o `common`.
+
 ### Frontend
 
 - Elimine los intervals en los que se hacian requests para obtener la lista de cursos, contenidos y usuarios, ya que se hacia un request por segundo de manera innecesaria. Ahora cuando se hace una modificacion, ya sea creacion, actualizacion o eliminacion, en ese momento se vuelve a hacer el fetch para obtener el listado completo de elementos. Esto se podria mejorar incluso mas si guardaramos en memoria la lista de elementos, y cuando se hace un cambio en algun elemento actualizamos la lista en memoria sin necesidad de hacer un GET de mas para obtener la lista nueva.

@@ -50,3 +50,5 @@ Considero que lo mas importante y urgente es que el proyecto funcione correctame
 - Agregue los styles de Urbano al frontend basandomen en el documento compartido para realizar el challenge.
 - Arregle el sidebar para que muestre cual es la ruta activa. Y tambien agregue el layout al routing de la aplicacion, es decir, todas las rutas que se coloquen por dentro de `<Route element={<Layout />}>...</Route>` van a estar envueltas en el mismo por defecto.
 - Tambien cree un componente `Container` para envolver el contenido principal de la aplicacion y aplicar margenes, paddings y los styles del titulo para no tener que repetir codigo.
+- Agrege un hook de `useDebounce` para manejar los cambios en los inputs de busqueda de manera mas eficiente.
+- Agregue un hook de `useDebounceState` para manejar el estado de los inputs de busqueda de manera mas limpia.

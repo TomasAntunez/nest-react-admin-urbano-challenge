@@ -6,8 +6,8 @@ import * as bcrypt from 'bcrypt';
 import * as cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module';
-import { Role } from './user/role.enum';
-import { User } from './user/user.entity';
+import { UserRole } from './user/core';
+import { User } from './user/infrastructure';
 
 async function createAdminOnFirstUse() {
   const admin = await User.findOne({ where: { username: 'admin' } });
@@ -18,7 +18,7 @@ async function createAdminOnFirstUse() {
       lastName: 'admin',
       isActive: true,
       username: 'admin',
-      role: Role.Admin,
+      role: UserRole.ADMIN,
       password: await bcrypt.hash('admin123', 10),
     }).save();
   }

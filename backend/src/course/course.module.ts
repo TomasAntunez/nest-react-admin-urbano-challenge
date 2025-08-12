@@ -1,15 +1,14 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { ContentModule } from '../content/content.module';
-import { CourseController } from './course.controller';
-import { Course } from './course.entity';
-import { CourseService } from './course.service';
+import { CourseContentModule } from '../course-content/course-content.module';
+import { Course } from './infrastructure';
+import { CourseController, CourseService } from './presentation';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Course]),
-    forwardRef(() => ContentModule),
+    forwardRef(() => CourseContentModule),
   ],
   controllers: [CourseController],
   providers: [CourseService],

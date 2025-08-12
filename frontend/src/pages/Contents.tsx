@@ -7,6 +7,7 @@ import { useParams } from 'react-router';
 import { ContentsTable } from '../components/content/ContentsTable';
 import { Container } from '../components/shared/Container';
 import { Modal } from '../components/shared/Modal';
+import { useDebounce } from '../hooks/use-debounce';
 import { useAuth } from '../hooks/useAuth';
 import { CreateContentRequest } from '../models/content/CreateContentRequest';
 import { contentService } from '../services/ContentService';
@@ -32,12 +33,15 @@ export default function Course() {
     reset,
   } = useForm<CreateContentRequest>();
 
+  const debouncedName = useDebounce(name);
+  const debouncedDescription = useDebounce(description);
+
   const { data, isLoading, refetch } = useQuery(
-    [`contents-${id}`, name, description],
+    [`contents-${id}`, debouncedName, debouncedDescription],
     async () => {
       return contentService.findAll(id, {
-        name: name || undefined,
-        description: description || undefined,
+        name: debouncedName || undefined,
+        description: debouncedDescription || undefined,
       });
     },
   );

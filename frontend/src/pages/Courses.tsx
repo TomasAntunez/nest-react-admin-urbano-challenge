@@ -6,6 +6,7 @@ import { useQuery } from 'react-query';
 import { CoursesTable } from '../components/courses/CoursesTable';
 import { Container } from '../components/shared/Container';
 import { Modal } from '../components/shared/Modal';
+import { useDebounce } from '../hooks/use-debounce';
 import { useAuth } from '../hooks/useAuth';
 import { CreateCourseRequest } from '../models/course/CreateCourseRequest';
 import { courseService } from '../services/CourseService';
@@ -18,12 +19,16 @@ export default function Courses() {
   const [error, setError] = useState<string>();
 
   const { authenticatedUser } = useAuth();
+
+  const debouncedName = useDebounce(name);
+  const debouncedDescription = useDebounce(description);
+
   const { data, isLoading, refetch } = useQuery(
-    ['courses', name, description],
+    ['courses', debouncedName, debouncedDescription],
     () => {
       return courseService.findAll({
-        name: name || undefined,
-        description: description || undefined,
+        name: debouncedName || undefined,
+        description: debouncedDescription || undefined,
       });
     },
   );

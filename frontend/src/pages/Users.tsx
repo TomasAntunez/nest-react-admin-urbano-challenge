@@ -6,6 +6,7 @@ import { useQuery } from 'react-query';
 import { Container } from '../components/shared/Container';
 import { Modal } from '../components/shared/Modal';
 import { UsersTable } from '../components/users/UsersTable';
+import { useDebounce } from '../hooks/use-debounce';
 import { useAuth } from '../hooks/useAuth';
 import { CreateUserRequest } from '../models/user/CreateUserRequest';
 import { userService } from '../services/UserService';
@@ -21,14 +22,18 @@ export default function Users() {
   const [addUserShow, setAddUserShow] = useState<boolean>(false);
   const [error, setError] = useState<string>();
 
+  const debouncedFirstName = useDebounce(firstName);
+  const debouncedLastName = useDebounce(lastName);
+  const debouncedUsername = useDebounce(username);
+
   const { data, isLoading, refetch } = useQuery(
-    ['users', firstName, lastName, username, role],
+    ['users', debouncedFirstName, debouncedLastName, debouncedUsername, role],
     async () => {
       return (
         await userService.findAll({
-          firstName: firstName || undefined,
-          lastName: lastName || undefined,
-          username: username || undefined,
+          firstName: debouncedFirstName || undefined,
+          lastName: debouncedLastName || undefined,
+          username: debouncedUsername || undefined,
           role: role || undefined,
         })
       ).filter((user) => user.id !== authenticatedUser.id);

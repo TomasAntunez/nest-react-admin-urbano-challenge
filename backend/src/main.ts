@@ -7,13 +7,13 @@ import * as cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module';
 import { UserRole } from './user/core';
-import { User } from './user/infrastructure';
+import { SqlUser } from './user/infrastructure';
 
 async function createAdminOnFirstUse() {
-  const admin = await User.findOne({ where: { username: 'admin' } });
+  const admin = await SqlUser.findOne({ where: { username: 'admin' } });
 
   if (!admin) {
-    await User.create({
+    await SqlUser.create({
       firstName: 'admin',
       lastName: 'admin',
       isActive: true,

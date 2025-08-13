@@ -42,7 +42,8 @@
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.3",
     "swagger-ui-express": "^4.1.6",
-    "typeorm": "^0.2.32"
+    "typeorm": "^0.2.32",
+    "uuid": "^9"
   },
   "devDependencies": {
     "@golevelup/nestjs-testing": "^0.1.2",
@@ -57,9 +58,10 @@
     "@types/passport-jwt": "^3.0.5",
     "@types/passport-local": "^1.0.33",
     "@types/supertest": "^2.0.10",
-    "@typescript-eslint/eslint-plugin": "^4.6.1",
-    "@typescript-eslint/parser": "^4.6.1",
-    "eslint": "^7.12.1",
+    "@types/uuid": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "8.7.0",
+    "@typescript-eslint/parser": "8.7.0",
+    "eslint": "8.57.0",
     "eslint-config-prettier": "7.2.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-simple-import-sort": "^7.0.0",

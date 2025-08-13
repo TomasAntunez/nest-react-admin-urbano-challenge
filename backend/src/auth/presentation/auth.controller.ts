@@ -36,7 +36,7 @@ export class AuthController {
   async logout(
     @Req() request: Request,
     @Res({ passthrough: true }) response: Response,
-  ): Promise<boolean> {
+  ): Promise<void> {
     return await this.authService.logout(request, response);
   }
 

@@ -3,8 +3,8 @@ import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { UserRole } from '../core';
 
-@Entity()
-export class User extends BaseEntity {
+@Entity({ name: 'users' })
+export class SqlUser extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

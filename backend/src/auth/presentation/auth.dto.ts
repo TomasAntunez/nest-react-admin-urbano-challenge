@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 
-import { User } from '../../user/infrastructure';
+import { UserResponseDto } from '../../user/application';
 
 export class LoginDto {
   @IsNotEmpty()
@@ -12,5 +12,5 @@ export class LoginDto {
 
 export class LoginResponseDto {
   token: string;
-  user: User;
+  user: UserResponseDto;
 }

@@ -9,6 +9,9 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 
+import { UserMapper } from '../../user/application';
+import { User } from '../../user/core';
+import { SqlUserRepository } from '../../user/infrastructure';
 import { UserService } from '../../user/presentation';
 import { LoginDto, LoginResponseDto } from './auth.dto';
 
@@ -20,6 +23,7 @@ export class AuthService {
   constructor(
     @Inject(forwardRef(() => UserService))
     private readonly userService: UserService,
+    private readonly userRepository: SqlUserRepository,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -28,45 +32,52 @@ export class AuthService {
     response: Response,
   ): Promise<LoginResponseDto> {
     const { username, password } = loginDto;
-    const user = await this.userService.findByUsername(username);
 
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+    const user = await this.userRepository.findByUsername(username);
+
+    if (!user || !(await bcrypt.compare(password, user.getHashedPassword()))) {
       throw new HttpException(
         'Invalid username or password',
         HttpStatus.UNAUTHORIZED,
       );
     }
 
-    if (!user.isActive) {
+    if (!user.getIsActive()) {
       throw new HttpException('Account is disabled', HttpStatus.UNAUTHORIZED);
     }
 
-    const { id, firstName, lastName, role } = user;
+    const payload = this.createPayload(user);
+    const userId = user.getId().toString();
 
-    const accessToken = await this.jwtService.signAsync(
-      { username, firstName, lastName, role },
-      { subject: id, expiresIn: '15m', secret: this.SECRET },
-    );
+    const accessToken = await this.jwtService.signAsync(payload, {
+      subject: userId,
+      expiresIn: '15m',
+      secret: this.SECRET,
+    });
 
     /* Generates a refresh token and stores it in a httponly cookie */
-    const refreshToken = await this.jwtService.signAsync(
-      { username, firstName, lastName, role },
-      { subject: id, expiresIn: '1y', secret: this.REFRESH_SECRET },
-    );
+    const refreshToken = await this.jwtService.signAsync(payload, {
+      subject: userId,
+      expiresIn: '1y',
+      secret: this.REFRESH_SECRET,
+    });
 
-    await this.userService.setRefreshToken(id, refreshToken);
+    user.setRefreshToken(await bcrypt.hash(refreshToken, 10));
+    await this.userRepository.update(user);
 
     response.cookie('refresh-token', refreshToken, { httpOnly: true });
 
-    return { token: accessToken, user };
+    return this.createLoginResponseDto(accessToken, user);
   }
 
   /* Because JWT is a stateless authentication, this function removes the refresh token from the cookies and the database */
-  async logout(request: Request, response: Response): Promise<boolean> {
+  async logout(request: Request, response: Response): Promise<void> {
     const userId = request.user['userId'];
-    await this.userService.setRefreshToken(userId, null);
+
+    const user = await this.userService.findById(userId);
+    await this.removeUserRefreshToken(user);
+
     response.clearCookie('refresh-token');
-    return true;
   }
 
   async refresh(
@@ -79,33 +90,64 @@ export class AuthService {
 
     const decoded = this.jwtService.decode(refreshToken);
     const user = await this.userService.findById(decoded['sub']);
-    const { firstName, lastName, username, id, role } = user;
 
-    if (!(await bcrypt.compare(refreshToken, user.refreshToken))) {
+    if (!(await bcrypt.compare(refreshToken, user.getRefreshToken()))) {
       response.clearCookie('refresh-token');
       throw new HttpException(
         'Refresh token is not valid',
         HttpStatus.FORBIDDEN,
       );
     }
+
+    const userId = user.getId().toString();
 
     try {
       await this.jwtService.verifyAsync(refreshToken, {
         secret: this.REFRESH_SECRET,
       });
+
       const accessToken = await this.jwtService.signAsync(
-        { username, firstName, lastName, role },
-        { subject: id, expiresIn: '15m', secret: this.SECRET },
+        this.createPayload(user),
+        {
+          subject: userId,
+          expiresIn: '15m',
+          secret: this.SECRET,
+        },
       );
 
-      return { token: accessToken, user };
+      return this.createLoginResponseDto(accessToken, user);
     } catch (error) {
       response.clearCookie('refresh-token');
-      await this.userService.setRefreshToken(id, null);
+      await this.removeUserRefreshToken(user);
+
       throw new HttpException(
         'Refresh token is not valid',
         HttpStatus.FORBIDDEN,
       );
     }
+  }
+
+  private createPayload(user: User) {
+    return {
+      username: user.getUsername(),
+      firstName: user.getFirstName(),
+      lastName: user.getLastName(),
+      role: user.getRole(),
+    };
+  }
+
+  private async removeUserRefreshToken(user: User): Promise<void> {
+    user.removeRefreshToken();
+    await this.userRepository.update(user);
+  }
+
+  private createLoginResponseDto(
+    accessToken: string,
+    user: User,
+  ): LoginResponseDto {
+    return {
+      token: accessToken,
+      user: UserMapper.toResponse(user),
+    };
   }
 }

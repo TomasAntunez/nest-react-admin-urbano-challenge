@@ -1,15 +1,24 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { ILike } from 'typeorm';
 
-import { User } from '../infrastructure';
+import { Uuid } from '../../shared/core';
+import { UserMapper, UserResponseDto } from '../application';
+import { FindUsersDto, User, UserRepository } from '../core';
+import { SqlUserRepository } from '../infrastructure';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { UserQuery } from './user.query';
 
 @Injectable()
 export class UserService {
-  async save(createUserDto: CreateUserDto): Promise<User> {
-    const user = await this.findByUsername(createUserDto.username);
+  constructor(
+    @Inject(SqlUserRepository)
+    private readonly userRepository: UserRepository,
+  ) {}
+
+  async save(createUserDto: CreateUserDto): Promise<UserResponseDto> {
+    const user = await this.userRepository.findByUsername(
+      createUserDto.username,
+    );
 
     if (user) {
       throw new HttpException(
@@ -20,27 +29,23 @@ export class UserService {
 
     const { password } = createUserDto;
     createUserDto.password = await bcrypt.hash(password, 10);
-    return User.create(createUserDto).save();
+
+    const newUser = User.create(createUserDto);
+    await this.userRepository.create(newUser);
+
+    return UserMapper.toResponse(newUser);
   }
 
-  async findAll(userQuery: UserQuery): Promise<User[]> {
-    Object.keys(userQuery).forEach((key) => {
-      if (key !== 'role') {
-        userQuery[key] = ILike(`%${userQuery[key]}%`);
-      }
-    });
+  async findAll(userQuery: UserQuery): Promise<UserResponseDto[]> {
+    const users = await this.userRepository.findAll(
+      new FindUsersDto(userQuery),
+    );
 
-    return User.find({
-      where: userQuery,
-      order: {
-        firstName: 'ASC',
-        lastName: 'ASC',
-      },
-    });
+    return users.map(UserMapper.toResponse);
   }
 
   async findById(id: string): Promise<User> {
-    const user = await User.findOne(id);
+    const user = await this.userRepository.findById(Uuid.fromString(id));
 
     if (!user) {
       throw new HttpException(
@@ -52,15 +57,14 @@ export class UserService {
     return user;
   }
 
-  async findByUsername(username: string): Promise<User> {
-    return User.findOne({ where: { username } });
-  }
-
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const currentUser = await this.findById(id);
+  async update(
+    id: string,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UserResponseDto> {
+    const user = await this.findById(id);
 
     /* If username is same as before, delete it from the dto */
-    if (currentUser.username === updateUserDto.username) {
+    if (user.getUsername() === updateUserDto.username) {
       delete updateUserDto.username;
     }
 
@@ -69,7 +73,7 @@ export class UserService {
     }
 
     if (updateUserDto.username) {
-      if (await this.findByUsername(updateUserDto.username)) {
+      if (await this.userRepository.findByUsername(updateUserDto.username)) {
         throw new HttpException(
           `User with username ${updateUserDto.username} is already exists`,
           HttpStatus.BAD_REQUEST,
@@ -77,23 +81,17 @@ export class UserService {
       }
     }
 
-    return User.create({ id, ...updateUserDto }).save();
+    user.edit(updateUserDto);
+    await this.userRepository.update(user);
+
+    return UserMapper.toResponse(user);
   }
 
-  async delete(id: string): Promise<string> {
-    await User.delete(await this.findById(id));
-    return id;
+  async delete(id: string): Promise<void> {
+    await this.userRepository.delete(await this.findById(id));
   }
 
   async count(): Promise<number> {
-    return await User.count();
-  }
-
-  /* Hash the refresh token and save it to the database */
-  async setRefreshToken(id: string, refreshToken: string): Promise<void> {
-    const user = await this.findById(id);
-    await User.update(user, {
-      refreshToken: refreshToken ? await bcrypt.hash(refreshToken, 10) : null,
-    });
+    return await this.userRepository.count();
   }
 }

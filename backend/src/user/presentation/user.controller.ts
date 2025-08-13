@@ -21,8 +21,8 @@ import {
   RolesGuard,
   UserGuard,
 } from '../../auth/presentation';
+import { UserMapper, UserResponseDto } from '../application';
 import { UserRole } from '../core';
-import { User } from '../infrastructure';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { UserQuery } from './user.query';
 import { UserService } from './user.service';
@@ -38,20 +38,20 @@ export class UserController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @Roles(UserRole.ADMIN)
-  async save(@Body() createUserDto: CreateUserDto): Promise<User> {
+  async save(@Body() createUserDto: CreateUserDto): Promise<UserResponseDto> {
     return await this.userService.save(createUserDto);
   }
 
   @Get()
   @Roles(UserRole.ADMIN)
-  async findAll(@Query() userQuery: UserQuery): Promise<User[]> {
+  async findAll(@Query() userQuery: UserQuery): Promise<UserResponseDto[]> {
     return await this.userService.findAll(userQuery);
   }
 
   @Get('/:id')
   @UseGuards(UserGuard)
-  async findOne(@Param('id') id: string): Promise<User> {
-    return await this.userService.findById(id);
+  async findOne(@Param('id') id: string): Promise<UserResponseDto> {
+    return UserMapper.toResponse(await this.userService.findById(id));
   }
 
   @Put('/:id')
@@ -59,13 +59,13 @@ export class UserController {
   async update(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
-  ): Promise<User> {
+  ): Promise<UserResponseDto> {
     return await this.userService.update(id, updateUserDto);
   }
 
   @Delete('/:id')
   @Roles(UserRole.ADMIN)
-  async delete(@Param('id') id: string): Promise<string> {
-    return await this.userService.delete(id);
+  async delete(@Param('id') id: string): Promise<void> {
+    await this.userService.delete(id);
   }
 }

@@ -1,18 +1,11 @@
-import {
-  forwardRef,
-  HttpException,
-  HttpStatus,
-  Inject,
-  Injectable,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 
-import { UserMapper } from '../../user/application';
+import { GetUserById, UserMapper } from '../../user/application';
 import { User } from '../../user/core';
 import { SqlUserRepository } from '../../user/infrastructure';
-import { UserService } from '../../user/presentation';
+import { BcryptEncryptionService } from '../infrastructure';
 import { LoginDto, LoginResponseDto } from './auth.dto';
 
 @Injectable()
@@ -21,10 +14,10 @@ export class AuthService {
   private readonly REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
 
   constructor(
-    @Inject(forwardRef(() => UserService))
-    private readonly userService: UserService,
     private readonly userRepository: SqlUserRepository,
+    private readonly encryptService: BcryptEncryptionService,
     private readonly jwtService: JwtService,
+    private readonly getUserById: GetUserById,
   ) {}
 
   async login(
@@ -35,7 +28,12 @@ export class AuthService {
 
     const user = await this.userRepository.findByUsername(username);
 
-    if (!user || !(await bcrypt.compare(password, user.getHashedPassword()))) {
+    const passwordsAreEquals = await this.encryptService.compare(
+      password,
+      user.getHashedPassword(),
+    );
+
+    if (!user || !passwordsAreEquals) {
       throw new HttpException(
         'Invalid username or password',
         HttpStatus.UNAUTHORIZED,
@@ -62,7 +60,7 @@ export class AuthService {
       secret: this.REFRESH_SECRET,
     });
 
-    user.setRefreshToken(await bcrypt.hash(refreshToken, 10));
+    user.setRefreshToken(await this.encryptService.hash(refreshToken));
     await this.userRepository.update(user);
 
     response.cookie('refresh-token', refreshToken, { httpOnly: true });
@@ -74,7 +72,7 @@ export class AuthService {
   async logout(request: Request, response: Response): Promise<void> {
     const userId = request.user['userId'];
 
-    const user = await this.userService.findById(userId);
+    const user = await this.getUserById.execute(userId);
     await this.removeUserRefreshToken(user);
 
     response.clearCookie('refresh-token');
@@ -89,9 +87,14 @@ export class AuthService {
     }
 
     const decoded = this.jwtService.decode(refreshToken);
-    const user = await this.userService.findById(decoded['sub']);
+    const user = await this.getUserById.execute(decoded['sub']);
 
-    if (!(await bcrypt.compare(refreshToken, user.getRefreshToken()))) {
+    const refreshTokensAreEquals = await this.encryptService.compare(
+      refreshToken,
+      user.getRefreshToken(),
+    );
+
+    if (!refreshTokensAreEquals) {
       response.clearCookie('refresh-token');
       throw new HttpException(
         'Refresh token is not valid',

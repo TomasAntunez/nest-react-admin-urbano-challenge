@@ -1,5 +1,5 @@
-import { User } from '../core';
-import { UserResponseDto } from './user-response.dto';
+import { User } from '../../core';
+import { UserResponseDto } from '../dtos/user-response.dto';
 
 export class UserMapper {
   static toResponse(user: User): UserResponseDto {

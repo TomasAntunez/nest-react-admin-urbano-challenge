@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { UserRole } from '../core';
 import { UserController } from './user.controller';
-import { CreateUserDto, UpdateUserDto } from './user.dto';
+import { CreateUserDto, UpdateUserBodyDto } from './user.dto';
 import { UserService } from './user.service';
 
 const MockService = {
@@ -51,7 +51,7 @@ const MockService = {
   }),
   update: jest
     .fn()
-    .mockImplementation((id: string, updateUserDto: UpdateUserDto) => {
+    .mockImplementation((id: string, updateUserDto: UpdateUserBodyDto) => {
       return {
         id,
         ...updateUserDto,

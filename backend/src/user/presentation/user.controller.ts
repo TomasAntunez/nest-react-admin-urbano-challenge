@@ -21,11 +21,19 @@ import {
   RolesGuard,
   UserGuard,
 } from '../../auth/presentation';
-import { UserMapper, UserResponseDto } from '../application';
-import { UserRole } from '../core';
-import { CreateUserDto, UpdateUserDto } from './user.dto';
+import {
+  CreateUser,
+  DeleteUser,
+  GetUserById,
+  GetUsers,
+  UpdateUser,
+  UpdateUserDto,
+  UserMapper,
+  UserResponseDto,
+} from '../application';
+import { FindUsersDto, UserRole } from '../core';
+import { CreateUserDto, UpdateUserBodyDto } from './user.dto';
 import { UserQuery } from './user.query';
-import { UserService } from './user.service';
 
 @Controller('users')
 @ApiTags('Users')
@@ -33,39 +41,45 @@ import { UserService } from './user.service';
 @UseGuards(JwtGuard, RolesGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly createUser: CreateUser,
+    private readonly getUserById: GetUserById,
+    private readonly getUsers: GetUsers,
+    private readonly updateUser: UpdateUser,
+    private readonly deleteUser: DeleteUser,
+  ) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @Roles(UserRole.ADMIN)
   async save(@Body() createUserDto: CreateUserDto): Promise<UserResponseDto> {
-    return await this.userService.save(createUserDto);
+    return await this.createUser.execute(createUserDto);
   }
 
   @Get()
   @Roles(UserRole.ADMIN)
   async findAll(@Query() userQuery: UserQuery): Promise<UserResponseDto[]> {
-    return await this.userService.findAll(userQuery);
+    return await this.getUsers.execute(new FindUsersDto(userQuery));
   }
 
   @Get('/:id')
   @UseGuards(UserGuard)
   async findOne(@Param('id') id: string): Promise<UserResponseDto> {
-    return UserMapper.toResponse(await this.userService.findById(id));
+    return UserMapper.toResponse(await this.getUserById.execute(id));
   }
 
   @Put('/:id')
   @UseGuards(UserGuard)
   async update(
     @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserDto,
-  ): Promise<UserResponseDto> {
-    return await this.userService.update(id, updateUserDto);
+    @Body() updateUserDto: UpdateUserBodyDto,
+  ): Promise<void> {
+    await this.updateUser.execute(new UpdateUserDto({ ...updateUserDto, id }));
   }
 
   @Delete('/:id')
   @Roles(UserRole.ADMIN)
   async delete(@Param('id') id: string): Promise<void> {
-    await this.userService.delete(id);
+    await this.deleteUser.execute(id);
   }
 }

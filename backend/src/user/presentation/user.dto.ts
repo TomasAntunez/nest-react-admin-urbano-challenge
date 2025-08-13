@@ -32,7 +32,7 @@ export class CreateUserDto {
   role: UserRole;
 }
 
-export class UpdateUserDto {
+export class UpdateUserBodyDto {
   @IsOptional()
   @IsNotEmpty()
   @IsString()

@@ -68,6 +68,7 @@ Considero que lo mas importante y urgente es que el proyecto funcione correctame
   - Ahora mismo es necesario desacoplar algunas cosas, por lo que en casi todos los modulos tenemos casi todo en la capa mas superficial. La idea tampoco es ser purista e intentar tener el 100% abstraido, ya que nos perderiamos muchas soluciones que nos ofrece el framework y algunas librerias si vamos a ese extremo.
 - Implemente repository pattern en el modulo de user para abstraer la logica de acceso a datos. Tambien cree mappers que se encarguen de la comunicacion entre las capas.
 - Cree una abstraccion para bcrypt para no exponer la libreria por toda la aplicacion, y ahora se puede utilizar lo que es el encryption service.
+- Cree la capa de aplicacion en el modulo de usuario con todos los casos de uso, dtos y mappers necesario.
 
 ### Frontend
 

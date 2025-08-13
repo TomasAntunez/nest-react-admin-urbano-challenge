@@ -1,4 +1,3 @@
-import { Injectable } from '@nestjs/common';
 import { ILike } from 'typeorm';
 
 import { Uuid } from '../../shared/core';
@@ -6,7 +5,6 @@ import { FindUsersDto, User, UserRepository } from '../core';
 import { SqlUser } from './sql-user.entity';
 import { UserMapper } from './user.mapper';
 
-@Injectable()
 export class SqlUserRepository implements UserRepository {
   async findById(id: Uuid): Promise<User | null> {
     const user = await SqlUser.findOne(id.toString());
@@ -19,14 +17,20 @@ export class SqlUserRepository implements UserRepository {
   }
 
   async findAll(dto: FindUsersDto): Promise<User[]> {
+    const query = {};
+
     Object.keys(dto).forEach((key) => {
-      if (key !== 'role') {
-        dto[key] = ILike(`%${dto[key]}%`);
+      if (!dto[key]) return;
+
+      if (key === 'role') {
+        query[key] = dto[key];
+      } else {
+        query[key] = ILike(`%${dto[key]}%`);
       }
     });
 
     const users = await SqlUser.find({
-      where: dto,
+      where: query,
       order: {
         firstName: 'ASC',
         lastName: 'ASC',

@@ -12,9 +12,14 @@ interface UserConstructor {
   isActive: boolean;
 }
 
-type CreateParams = Omit<UserConstructor, 'id' | 'refreshToken' | 'isActive'>;
+export type CreateUserParams = Omit<
+  UserConstructor,
+  'id' | 'refreshToken' | 'isActive'
+>;
 
-type EditParams = Partial<Omit<UserConstructor, 'id' | 'refreshToken'>>;
+export type EditUserParams = Partial<
+  Omit<UserConstructor, 'id' | 'refreshToken'>
+>;
 
 export class User {
   private readonly id: Uuid;
@@ -37,7 +42,7 @@ export class User {
     this.isActive = data.isActive;
   }
 
-  static create(params: CreateParams): User {
+  static create(params: CreateUserParams): User {
     return new User({
       id: Uuid.create(),
       firstName: params.firstName,
@@ -54,12 +59,13 @@ export class User {
     return new User(data);
   }
 
-  edit(params: EditParams): void {
+  edit(params: EditUserParams): void {
     if (params.firstName) this.firstName = params.firstName;
     if (params.lastName) this.lastName = params.lastName;
     if (params.username) this.username = params.username;
     if (params.password) this.password = params.password;
     if (params.role) this.role = params.role;
+    if (params.isActive !== undefined) this.isActive = params.isActive;
   }
 
   setRefreshToken(refreshToken: string): void {

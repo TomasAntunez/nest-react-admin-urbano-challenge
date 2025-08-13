@@ -66,6 +66,7 @@ Considero que lo mas importante y urgente es que el proyecto funcione correctame
     - configuraciones
     - modelos de datos
   - Ahora mismo es necesario desacoplar algunas cosas, por lo que en casi todos los modulos tenemos casi todo en la capa mas superficial. La idea tampoco es ser purista e intentar tener el 100% abstraido, ya que nos perderiamos muchas soluciones que nos ofrece el framework y algunas librerias si vamos a ese extremo.
+- Implemente repository pattern en el modulo de user para abstraer la logica de acceso a datos. Tambien cree mappers que se encarguen de la comunicacion entre las capas.
 
 ### Frontend
 

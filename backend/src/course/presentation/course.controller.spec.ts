@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 import {
-  ContentService,
+  CourseContentService,
   CreateCourseContentDto,
   UpdateCourseContentDto,
 } from '../../course-content/presentation';
@@ -70,7 +70,7 @@ const ContentMockService = {
         };
       },
     ),
-  findAllByCourseId: jest.fn().mockImplementation((id: string) => {
+  findAllByCourseId: jest.fn().mockImplementation((_id: string) => {
     return [
       {
         id: 'testid1',
@@ -123,7 +123,7 @@ describe('CourseController', () => {
           useValue: CourseMockService,
         },
         {
-          provide: ContentService,
+          provide: CourseContentService,
           useValue: ContentMockService,
         },
       ],

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { SqlUserRepository } from 'src/user/infrastructure';
 
 import { CourseService } from '../../course/presentation';
 import { CourseContentService } from '../../course-content/presentation';
+import { SqlUserRepository } from '../../user/infrastructure';
 import { StatsResponseDto } from './stats.dto';
 
 @Injectable()

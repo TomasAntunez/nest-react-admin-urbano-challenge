@@ -6,10 +6,10 @@ FROM base as dev-deps
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
-
 FROM base as build
 COPY --from=dev-deps /app/node_modules ./node_modules
 COPY . .
+RUN yarn test
 RUN yarn build
 
 

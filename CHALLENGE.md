@@ -70,6 +70,7 @@ Considero que lo mas importante y urgente es que el proyecto funcione correctame
 - Cree una abstraccion para bcrypt para no exponer la libreria por toda la aplicacion, y ahora se puede utilizar lo que es el encryption service.
 - Cree la capa de aplicacion en el modulo de usuario con todos los casos de uso, dtos y mappers necesario.
 - Hice una optimizacion en el servicio de stats para hacer las 3 llamadas a la base de datos en simultaneo ya que no tienen dependencias entre si.
+- Creer las pruebas automatizadas para la capa de aplicacion, al menos para los casos de uso, arregle algunos tests que se rompieron con el refactor y agregue la ejecucion de `yarn test` en el Dockerfile, para que la imagen no pueda construirse a menos que pase las pruebas, esto mejoraria la estabilidad de la aplicacion en entornos de CD.
 
 ### Frontend
 

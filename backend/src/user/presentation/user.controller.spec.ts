@@ -1,63 +1,73 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
+import {
+  CreateUser,
+  DeleteUser,
+  GetUserById,
+  GetUsers,
+  UpdateUser,
+  UserResponseDto,
+} from '../application';
 import { UserRole } from '../core';
 import { UserController } from './user.controller';
-import { CreateUserDto, UpdateUserBodyDto } from './user.dto';
-import { UserService } from './user.service';
 
-const MockService = {
-  findAll: jest.fn().mockResolvedValue([
-    {
+const mockCreateUser = {
+  execute: jest.fn().mockResolvedValue(
+    new UserResponseDto({
+      id: 'testid',
+      firstName: 'test',
+      lastName: 'test',
+      username: 'test',
+      role: UserRole.USER,
+      isActive: true,
+    }),
+  ),
+};
+const mockGetUserById = {
+  execute: jest.fn().mockResolvedValue({
+    getId: () => {
+      return { toString: () => '1' };
+    },
+    getFirstName: () => 'Jane',
+    getLastName: () => 'Smith',
+    getUsername: () => 'janesmith',
+    getRole: () => 'admin',
+    getIsActive: () => false,
+  }),
+};
+const mockGetUsers = {
+  execute: jest.fn().mockResolvedValue([
+    new UserResponseDto({
       id: 'test1',
       firstName: 'test1',
       lastName: 'test1',
       username: 'test1',
-      isActive: true,
       role: UserRole.ADMIN,
-    },
-    {
+      isActive: true,
+    }),
+    new UserResponseDto({
       id: 'test2',
       firstName: 'test2',
       lastName: 'test2',
       username: 'test2',
-      isActive: true,
       role: UserRole.ADMIN,
-    },
-    {
+      isActive: true,
+    }),
+    new UserResponseDto({
       id: 'test3',
       firstName: 'test3',
       lastName: 'test3',
       username: 'test3',
-      isActive: true,
       role: UserRole.ADMIN,
-    },
-  ]),
-  save: jest.fn().mockImplementation((createUserDto: CreateUserDto) => {
-    return {
-      id: 'testid',
-      ...createUserDto,
-    };
-  }),
-  findById: jest.fn().mockImplementation((id) => {
-    return {
-      id,
-      firstName: 'test',
-      lastName: 'test',
-      password: 'test',
-      role: UserRole.USER,
       isActive: true,
-      username: 'test',
-    };
-  }),
-  update: jest
-    .fn()
-    .mockImplementation((id: string, updateUserDto: UpdateUserBodyDto) => {
-      return {
-        id,
-        ...updateUserDto,
-      };
     }),
-  delete: jest.fn().mockImplementation((id: string) => id),
+  ]),
+};
+const mockUpdateUser = {
+  execute: jest.fn().mockResolvedValue(undefined),
+};
+const mockDeleteUser = {
+  execute: jest.fn().mockResolvedValue(undefined),
 };
 
 describe('UserController', () => {
@@ -67,10 +77,11 @@ describe('UserController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UserController],
       providers: [
-        {
-          provide: UserService,
-          useValue: MockService,
-        },
+        { provide: CreateUser, useValue: mockCreateUser },
+        { provide: GetUserById, useValue: mockGetUserById },
+        { provide: GetUsers, useValue: mockGetUsers },
+        { provide: UpdateUser, useValue: mockUpdateUser },
+        { provide: DeleteUser, useValue: mockDeleteUser },
       ],
     }).compile();
 
@@ -82,24 +93,24 @@ describe('UserController', () => {
   });
 
   describe('saveUser', () => {
-    it('should get the same user that is created', async () => {
+    it('should return the created user', async () => {
       const returnValue = await controller.save({
         firstName: 'test',
         lastName: 'test',
-        password: 'test',
+        password: 'testpass',
         role: UserRole.USER,
         username: 'test',
       });
       expect(returnValue.id).toBe('testid');
       expect(returnValue.firstName).toBe('test');
-      expect(returnValue.role).toBe('user');
+      expect(returnValue.role).toBe(UserRole.USER);
     });
   });
 
   describe('findAllUsers', () => {
     it('should get the list of users', async () => {
       const users = await controller.findAll({});
-      expect(typeof users).toBe('object');
+      expect(Array.isArray(users)).toBe(true);
       expect(users[0].firstName).toBe('test1');
       expect(users[1].lastName).toBe('test2');
       expect(users[2].username).toBe('test3');
@@ -109,28 +120,34 @@ describe('UserController', () => {
 
   describe('findOneUser', () => {
     it('should get a user matching id', async () => {
-      const user = await controller.findOne('id');
-      expect(user.id).toBe('id');
-      expect(user.firstName).toBe('test');
+      const user = await controller.findOne('1');
+      expect(user.id).toBe('1');
+      expect(user.firstName).toBe('Jane');
     });
   });
 
   describe('updateUser', () => {
-    it('should update a user and return changed values', async () => {
-      const updatedUser = await controller.update('testid', {
+    it('should update a user and return void', async () => {
+      const result = await controller.update('testid', {
         firstName: 'test',
         role: UserRole.EDITOR,
       });
-      expect(updatedUser.id).toBe('testid');
-      expect(updatedUser.role).toBe('editor');
-      expect(updatedUser.lastName).toBe(undefined);
+      expect(result).toBeUndefined();
+      expect(mockUpdateUser.execute).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: 'testid',
+          firstName: 'test',
+          role: UserRole.EDITOR,
+        }),
+      );
     });
   });
 
   describe('deleteUser', () => {
-    it('should delete a user and return the id', async () => {
-      const id = await controller.delete('testid');
-      expect(id).toBe('testid');
+    it('should delete a user and return void', async () => {
+      const result = await controller.delete('testid');
+      expect(result).toBeUndefined();
+      expect(mockDeleteUser.execute).toHaveBeenCalledWith('testid');
     });
   });
 });

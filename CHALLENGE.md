@@ -69,6 +69,7 @@ Considero que lo mas importante y urgente es que el proyecto funcione correctame
 - Implemente repository pattern en el modulo de user para abstraer la logica de acceso a datos. Tambien cree mappers que se encarguen de la comunicacion entre las capas.
 - Cree una abstraccion para bcrypt para no exponer la libreria por toda la aplicacion, y ahora se puede utilizar lo que es el encryption service.
 - Cree la capa de aplicacion en el modulo de usuario con todos los casos de uso, dtos y mappers necesario.
+- Hice una optimizacion en el servicio de stats para hacer las 3 llamadas a la base de datos en simultaneo ya que no tienen dependencias entre si.
 
 ### Frontend
 

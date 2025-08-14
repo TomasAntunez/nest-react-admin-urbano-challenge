@@ -59,19 +59,35 @@ On the first run, application inserts a new admin to the database.
 
 # How to setup
 
-## **Deploy with Docker**
+## **Run full application locally with Docker**
 
-You can run the entire app using docker compose.
-
-On root directory
+1. Make sure you have Docker installed on your machine.
+2. Clone the repository.
+3. Navigate to the root directory of the project.
+4. Copy the `.env.template` file to `.env.local` and update the environment variables as needed.
+5. Run the following command to start the application:
 
 ```bash
-docker-compose up -d
+docker compose -f docker-compose.local.yml --env-file .env.local up
 ```
 
-Application will be deployed on http://localhost:3000
+The application will be running on the selected port or the default 3000.
 
 Swagger Docs on http://localhost:3000/api/docs
+
+## **Deployment**
+
+To build application images, run the following command:
+
+```bash
+docker compose -f docker-compose.prod.yml build
+```
+
+To push the images to a container registry, run the following command (remember to log in first):
+
+```bash
+docker compose -f docker-compose.prod.yml push
+```
 
 ## **Running locally**
 
@@ -95,9 +111,9 @@ yarn
 $ yarn start
 ```
 
-Backend will be started on http://localhost:5000
+Backend will be started on http://localhost:3001
 
-Swagger Docs on http://localhost:5000/api/docs
+Swagger Docs on http://localhost:3001/api/docs
 
 ## Frontend
 

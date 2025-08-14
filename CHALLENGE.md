@@ -76,6 +76,7 @@ Considero que lo mas importante y urgente es que el proyecto funcione correctame
 - Agregue un healthcheck en el servicio de base de datos porque los primeros intentos para que nest se conecte daban errores hasta que postgres estaba disponible.
 - Cree un modulo de Seed para llevarme la logica de creacion del admin fuera del main.ts para que quede mas limpio el codigo, asi tambien es mas facil agregar flujos mas complejos para crear datos en la base de datos.
 - Cree un `docker-compose.prod.yml` para hacer el build de las imagenes y poder pushearlas a un repositorio. Esto podria ser o no necesario de acuerdo a la estrategia que se use para desplegar. Lo importante son los archivos Dockerfile que contienen la construccion de las aplicaciones.
+- Agregue los comandos para levantar las apps en local y para crear las imagenes listas para produccion.
 
 ### Frontend
 

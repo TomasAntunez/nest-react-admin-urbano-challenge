@@ -22,7 +22,10 @@ import { UserModule } from './user/user.module';
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
         autoLoadEntities: true,
-        synchronize: true, // TODO: Check environment
+        synchronize: false,
+        migrationsRun: configService.get<string>('NODE_ENV') === 'local',
+        migrations: ['database/migrations/*.ts'],
+        migrationsTableName: 'typeorm_migrations',
       }),
     }),
 

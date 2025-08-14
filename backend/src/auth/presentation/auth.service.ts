@@ -28,16 +28,17 @@ export class AuthService {
 
     const user = await this.userRepository.findByUsername(username);
 
+    if (!user) {
+      this.throwInvalidCredentialsException();
+    }
+
     const passwordsAreEquals = await this.encryptService.compare(
       password,
       user.getHashedPassword(),
     );
 
-    if (!user || !passwordsAreEquals) {
-      throw new HttpException(
-        'Invalid username or password',
-        HttpStatus.UNAUTHORIZED,
-      );
+    if (!passwordsAreEquals) {
+      this.throwInvalidCredentialsException();
     }
 
     if (!user.getIsActive()) {
@@ -128,6 +129,13 @@ export class AuthService {
         HttpStatus.FORBIDDEN,
       );
     }
+  }
+
+  private throwInvalidCredentialsException() {
+    throw new HttpException(
+      'Invalid username or password',
+      HttpStatus.UNAUTHORIZED,
+    );
   }
 
   private createPayload(user: User) {

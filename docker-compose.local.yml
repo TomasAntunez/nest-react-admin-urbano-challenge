@@ -12,6 +12,11 @@ services:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     ports:
       - "${DATABASE_PORT}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER} -d ${DATABASE_NAME}"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
     restart: unless-stopped
 
   backend:
@@ -19,8 +24,10 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+      target: local
     depends_on:
-      - postgres-db
+      postgres-db:
+        condition: service_healthy
     environment:
       NODE_ENV: ${NODE_ENV}
       DATABASE_HOST: postgres-db

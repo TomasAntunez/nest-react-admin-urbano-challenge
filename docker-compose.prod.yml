@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  backend:
+    image: example-user/urbano-backend:1.0.0
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: prod
+
+  frontend:
+    image: example-user/urbano-frontend:1.0.0
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile

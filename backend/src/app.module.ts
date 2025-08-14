@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { CourseModule } from './course/course.module';
 import { CourseContentModule } from './course-content/course-content.module';
+import { SeedModule } from './seed/seed.module';
 import { StatsModule } from './stats/stats.module';
 import { UserModule } from './user/user.module';
 
@@ -29,6 +30,7 @@ import { UserModule } from './user/user.module';
       }),
     }),
 
+    SeedModule,
     UserModule,
     AuthModule,
     CourseModule,

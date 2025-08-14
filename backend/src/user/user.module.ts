@@ -26,6 +26,6 @@ import { UserController } from './presentation';
     UpdateUser,
     DeleteUser,
   ],
-  exports: [SqlUserRepository, GetUserById],
+  exports: [SqlUserRepository, GetUserById, CreateUser],
 })
 export class UserModule {}

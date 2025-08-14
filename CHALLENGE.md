@@ -30,6 +30,7 @@ Considero que lo mas importante y urgente es que el proyecto funcione correctame
 - Agregue variables de entorno en el `docker-compose.yml` (en el servicio de backend), para que los valores se agreguen de manera dinamica y no queden expuestos los valores en el repositorio.
 - Hice un upgrade de la version de bcrypt a la version `6.0.0` que no tiene problemas con versiones mas nuevas de node ni tampoco con la imagen de node:alpine. Otras alternativas eran cambiar a bcryptjs o hacer cambios en la construccion de la imagen de backend ya cambiando la imagen de base de node e instalando las herramientas necesarias para el funcionamiento correcto de los binarios que usa bcrypt.
 - Reconstruí el Dockerfile de backend para que la imagen se construya por capas, optimizando así el proceso de construcción y reduciendo el tamaño de la imagen final. Con el Dockerfile previo le imagen de backend tenia un size de `603MB` y ahora tiene un size `233MB`. Aparte quedo definita una version especifica de node y de alpine para asegurar la compatibilidad y estabilidad en el entorno de producción.
+- Cree un modulo de Seed para llevarme la logica de creacion del admin fuera del main.ts para que quede mas limpio el codigo, asi tambien es mas facil agregar flujos mas complejos para crear datos en la base de datos.
 
 ### Frontend
 

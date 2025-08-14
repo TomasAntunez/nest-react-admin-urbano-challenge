@@ -2,27 +2,9 @@ import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as bcrypt from 'bcrypt';
 import * as cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module';
-import { UserRole } from './user/core';
-import { SqlUser } from './user/infrastructure';
-
-async function createAdminOnFirstUse() {
-  const admin = await SqlUser.findOne({ where: { username: 'admin' } });
-
-  if (!admin) {
-    await SqlUser.create({
-      firstName: 'admin',
-      lastName: 'admin',
-      isActive: true,
-      username: 'admin',
-      role: UserRole.ADMIN,
-      password: await bcrypt.hash('admin123', 10),
-    }).save();
-  }
-}
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -39,8 +21,6 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/api/docs', app, document);
-
-  await createAdminOnFirstUse();
 
   const configService = app.get(ConfigService);
   const port = Number(configService.get<string>('BACKEND_PORT')) || 3000;
